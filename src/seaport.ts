@@ -1794,10 +1794,12 @@ export class OpenSeaPort {
 
     const txnData: any = { from: accountAddress }
     const gasEstimate = await this._wyvernProtocolReadOnly.wyvernProxyRegistry.registerProxy.estimateGasAsync(txnData)
+    this.logger(`Initializing proxy for account - gasEstimate ${gasEstimate}`)
     const transactionHash = await this._wyvernProtocol.wyvernProxyRegistry.registerProxy.sendTransactionAsync({
       ...txnData,
       gas: this._correctGasAmount(gasEstimate)
     })
+    this.logger(`Initializing proxy for account - transactionHash ${transactionHash}`)
 
     await this._confirmTransaction(transactionHash, EventType.InitializeAccount, "Initializing proxy for account", async () => {
       const polledProxy = await this._getProxy(accountAddress)
